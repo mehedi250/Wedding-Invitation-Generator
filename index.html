@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Wedding Invitation Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffffff;
+            color: #3e2723;
+        }
+
+        .invitation-card h1,
+        .invitation-card h2,
+        .invitation-card h3,
+        .invitation-card h4,
+        .invitation-card h5,
+        .invitation-card h6 {
+            color: #8b4513;
+        }
+
+        .invitation-card {
+            background: #fffaf0;
+            border: 5px double #cd853f;
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+            line-height: 1.8;
+        }
+
+        .invitation-card::before,
+        .invitation-card::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 4px solid #d2691e;
+            z-index: 0;
+        }
+
+        .invitation-card::before {
+            top: -2px;
+            left: -2px;
+            border-right: none;
+            border-bottom: none;
+            border-top-left-radius: 20px;
+        }
+
+        .invitation-card::after {
+            bottom: -2px;
+            right: -2px;
+            border-left: none;
+            border-top: none;
+            border-bottom-right-radius: 20px;
+        }
+
+        /* Mirror for other corners */
+        .invitation-card .corner-top-right,
+        .invitation-card .corner-bottom-left {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 4px solid #d2691e;
+            z-index: 0;
+        }
+
+        .invitation-card .corner-top-right {
+            top: -2px;
+            right: -2px;
+            border-left: none;
+            border-bottom: none;
+            border-top-right-radius: 20px;
+        }
+
+        .invitation-card .corner-bottom-left {
+            bottom: -2px;
+            left: -2px;
+            border-right: none;
+            border-top: none;
+            border-bottom-left-radius: 20px;
+        }
+
+
+        .invitation-card h2 {
+            font-size: 3.5em;
+            color: #8b4513;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .invitation-card .bismillah {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            color: #d2691e;
+            position: relative;
+            z-index: 1;
+        }
+
+        .invitation-card p {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 1.2em;
+            color: #3e2723;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .invitation-card p strong {
+            font-family: 'Baloo Da 2', cursive;
+            color: #a0522d;
+            font-size: 1.4em;
+        }
+
+        .invitation-card .details-section {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px dashed #d2691e;
+            position: relative;
+            z-index: 1;
+        }
+
+        .invitation-card .details-section h3 {
+            font-size: 1.8em;
+            color: #8b4513;
+            margin-bottom: 10px;
+        }
+
+        .invitation-card .sub-detail {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .invitation-card .highlight {
+            color: #d2691e;
+            font-weight: bold;
+        }
+
+        .invitation-card .program-time {
+            font-weight: bold;
+            color: #8b4513;
+            font-size: 1.15em;
+        }
+
+        .invitation-card .blessings-request {
+            margin-top: 30px;
+            font-style: italic;
+            color: #5a2c0f;
+            font-size: 1.1em;
+        }
+
+        .invitation-card .contact-info {
+            margin-top: 15px;
+            font-size: 1em;
+            color: #6d4c41;
+        }
+
+        .form-label {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: 1.1em;
+        }
+
+        .form-control:focus {
+            border-color: #d2691e;
+            box-shadow: 0 0 0 0.25rem rgba(210, 105, 30, 0.25);
+        }
+
+        .btn-primary:hover {
+            background-color: #8b4513;
+            border-color: #8b4513;
+        }
+
+        form label {
+            font-weight: 600;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.706);
+        }
+
+        /* Start Animation */
+        .red-bubble-1 {
+            z-index: -1;
+            position: absolute;
+            height: 80px;
+            width: 80px;
+            border-radius: 50%;
+            background: rgba(227, 93, 42, 0.05);
+            top: 110px;
+            right: 10%;
+            -webkit-animation: circle 2s linear infinite;
+            animation: circle 9s linear infinite;
+        }
+
+        .null-circle-1 {
+            z-index: -1;
+            position: absolute;
+            height: 30px;
+            width: 30px !important;
+            border-radius: 50%;
+            border: 2px solid rgba(95, 99, 134, 0.19);
+            top: 110px;
+            left: 10%;
+            -webkit-animation: scale 2s linear infinite;
+            animation: scale 9s linear infinite;
+        }
+
+        .red-bubble-2 {
+            z-index: -1;
+            position: absolute;
+            height: 80px;
+            width: 80px;
+            border-radius: 50%;
+            background: rgba(227, 93, 42, 0.05);
+            top: 60%;
+            left: 10%;
+            -webkit-animation: circle 2s linear infinite;
+            animation: circle 9s linear infinite;
+        }
+
+        .null-circle-2 {
+            z-index: -1;
+            position: absolute;
+            height: 30px;
+            width: 30px !important;
+            border-radius: 50%;
+            border: 2px solid rgba(95, 99, 134, 0.19);
+            top: 60%;
+            right: 10%;
+            -webkit-animation: scale 2s linear infinite;
+            animation: scale 9s linear infinite;
+        }
+
+
+        @keyframes scale {
+            50% {
+                -webkit-transform: scale(2);
+                transform: scale(2);
+                opacity: .3
+            }
+        }
+
+        @keyframes scalex {
+            50% {
+                -webkit-transform: scale(1.2);
+                transform: scale(1.2)
+            }
+        }
+
+
+        @keyframes circle {
+            0% {
+                -webkit-transform: rotate(0) translate(-165px) rotate(0);
+                transform: rotate(0) translate(-165px) rotate(0)
+            }
+
+            to {
+                -webkit-transform: rotate(1turn) translate(-165px) rotate(-1turn);
+                transform: rotate(1turn) translate(-165px) rotate(-1turn)
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-200px)
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h3 class="text-center mb-4">Wedding Invitation Generator</h3>
+        <div class="row">
+            <span class="null-circle-1"></span>
+            <span class="red-bubble-1"></span>
+
+            <div class="col-lg-6">
+                <div class="card p-4 bg-light shadow">
+                    <form id="invitationForm">
+                        <div class="mb-3">
+                            <label for="groom" class="form-label">বরের নাম</label>
+                            <input type="text" class="form-control" id="groom">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="bride" class="form-label">কনের নাম</label>
+                            <input type="text" class="form-control" id="bride">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="invitationFrom" class="form-label">আমন্ত্রণকর্তা</label>
+                            <select class="form-control" id="invitationFrom" required>
+                                <option value="পরিবার">পরিবার</option>
+                                <option value="বরের পরিবার">বরের পরিবার</option>
+                                <option value="কনের পরিবার">কনের পরিবার</option>
+                            </select>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <label for="weddingDate" class="form-label">বিয়ের তারিখ</label>
+                            <input type="date" class="form-control" id="weddingDate">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="weddingTime" class="form-label">বিয়ের সময়</label>
+                            <input type="text" class="form-control" id="weddingTime" value="রাত ৯:০০ ঘটিকা"
+                                placeholder="রাত ৯:০০ ঘটিকা">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="weddingVenue" class="form-label">বিয়ের স্থান</label>
+                            <input type="text" class="form-control" id="weddingVenue">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="message" class="form-label">ব্যক্তিগত বার্তা</label>
+                            <textarea class="form-control" id="message"
+                                rows="3">আমাদের এই আনন্দঘন মুহূর্তে আপনার উপস্থিতি একান্তভাবে কাম্য।</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary py-3 w-100">Generate Card</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="invitation-card mt-3 mt-md-0" id="invitationPreview">
+                    <div class="corner-top-right"></div>
+                    <div class="corner-bottom-left"></div>
+
+                    <p class="bismillah">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ<br>আল্লাহর নামে শুরু করছি</p>
+                    <h2 id="previewHeading">শুভ বিবাহ</h2>
+                    <p>শুভেচ্ছান্তে</p>
+                    <p><strong id="previewInvitationFrom">পরিবার</strong></p>
+                    <br>
+
+                    <p>আমরা আনন্দের সঙ্গে জানাচ্ছি যে,</p>
+                    <p style="margin-bottom: 0px;"><strong>বর:</strong> <span id="previewGroom">বর এর নাম</span></p>
+                    <p style="margin: 0px;">এবং</p>
+                    <p style="margin-bottom: 0px;"><strong>কনে:</strong> <span id="previewBride">কনের নাম</span></p>
+                    <p>একত্রিত হচ্ছেন পবিত্র বন্ধনে।</p>
+                    <p>আমাদের বিশেষ দিনে আপনি আমন্ত্রিত।</p>
+
+                    <div class="details-section">
+                        <h3>শুভ বিবাহ</h3>
+                        <p><span class="highlight">তারিখ:</span> <span id="previewWeddingDate">সামনের শুক্রবার</span>
+                        </p>
+                        <p><span class="highlight">সময়:</span> <span id="previewWeddingTime">রাত ৯:০০ ঘটিকা'</span></p>
+                        <p><span class="highlight">স্থান:</span> <span id="previewWeddingVenue">উত্তারা ভুতের গলি মোড়,
+                                ঢাকা</span>
+                        </p>
+                    </div>
+
+                    <p id="previewMessage" class="details-section">
+                        আমাদের এই আনন্দঘন মুহূর্তে আপনার উপস্থিতি একান্তভাবে কাম্য।
+                    </p>
+
+                    <p class="blessings-request">
+                        নবদম্পতির জন্য দোয়া ও আশীর্বাদ কামনা করছি।
+                    </p>
+                </div>
+
+                <button id="downloadCard" class="btn btn-outline-success shadow mt-4 py-3 w-100">Download Card</button>
+            </div>
+
+            <span class="null-circle-2"></span>
+            <span class="red-bubble-2"></span>
+        </div>
+    </div>
+
+    <footer class="text-center text-white mt-5">
+        <div class="container p-4 pb-0">
+            <section class="mb-4">
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+                    <i class="fab fa-twitter"></i>
+                </a>
+
+                <a class="btn btn-outline-light btn-floating m-1" href="mailto:mhshawon250@gmail.com" role="button">
+                    <i class="fab fa-google"></i>
+                </a>
+
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+                    <i class="fab fa-instagram"></i>
+                </a>
+
+                <a class="btn btn-outline-light btn-floating m-1" href="https://www.linkedin.com/in/mehedi-developer" role="button">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+
+                <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/mehedi250" role="button">
+                    <i class="fab fa-github"></i>
+                </a>
+            </section>
+        </div>
+
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2025 Copyright:
+            <a class="text-white" href="https://www.linkedin.com/in/mehedi-developer">Mehedi Hasan Shawon</a>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
+    <script>
+        function formatBanglaDate(isoDateString) {
+            if (!isoDateString) return '';
+
+            const date = new Date(isoDateString);
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long'
+            };
+            const formatted = date.toLocaleDateString('bn-BD', options);
+
+            const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+            const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+            let banglaFormatted = formatted;
+            for (let i = 0; i < 10; i++) {
+                banglaFormatted = banglaFormatted.replace(new RegExp(englishDigits[i], 'g'), banglaDigits[i]);
+            }
+            return banglaFormatted;
+        }
+
+        $(document).ready(function () {
+            console.log("Created  by Md. Mehedi Hasan Shawon. Software Engineer at OrangeToolz.");
+
+            function generatePreview() {
+                const groom = $('#groom').val();
+                const bride = $('#bride').val();
+                const invitationFrom = $('#invitationFrom').val();
+
+                const weddingDate = $('#weddingDate').val();
+                const weddingTime = $('#weddingTime').val();
+                const weddingVenue = $('#weddingVenue').val();
+
+                const message = $('#message').val();
+
+                $('#previewInvitationFrom').text(invitationFrom);
+                $('#previewBride').text(bride || 'কনের নাম');
+                $('#previewGroom').text(groom || 'বরের নাম');
+
+                $('#previewWeddingDate').text(formatBanglaDate(weddingDate) || 'সামনের শুক্রবার');
+                $('#previewWeddingTime').text(weddingTime || 'রাত ১২টা');
+                $('#previewWeddingVenue').text(weddingVenue || 'বলমুনা সরম করে');
+
+                $('#previewMessage').text(message || 'আমাদের এই আনন্দঘন মুহূর্তে আপনার উপস্থিতি একান্তভাবে কাম্য।');
+            }
+
+            $('#invitationForm').on('submit', function (e) {
+                e.preventDefault();
+                generatePreview();
+            });
+
+            $('#invitationForm input, #invitationForm textarea, #invulationForm select').on('input change', function () {
+                generatePreview();
+            });
+
+            $('#downloadCard').on('click', async function () {
+                const card = document.querySelector("#invitationPreview");
+
+                const canvas = await html2canvas(card, { scale: 3, useCORS: true, logging: true });
+
+                if (!canvas) {
+                    alert("Error generating image. Please try again.");
+                    return;
+                }
+
+                const imgData = canvas.toDataURL("image/png");
+
+                const link = document.createElement('a');
+                link.href = imgData;
+                link.download = 'Wedding-Invitation.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
